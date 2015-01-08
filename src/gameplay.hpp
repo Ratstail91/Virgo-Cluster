@@ -19,33 +19,30 @@
  * 3. This notice may not be removed or altered from any source
  * distribution.
 */
-#include "application.hpp"
-#include "config_utility.hpp"
+#ifndef GAMEPLAY_HPP_
+#define GAMEPLAY_HPP_
 
-#include <stdexcept>
-#include <iostream>
+#include "base_scene.hpp"
 
-int main(int argc, char* argv[]) {
-	try {
-		//create the singletons
-		ConfigUtility::CreateSingleton();
+class Gameplay: public BaseScene {
+public:
+	//Public access members
+	Gameplay();
+	~Gameplay();
 
-		//call the application's routines
-		Application::CreateSingleton();
-		Application app = Application::GetSingleton();
+protected:
+	//Frame loop
+	void FrameStart();
+	void Update();
+	void FrameEnd();
+	void Render(SDL_Surface* const);
 
-		app.Init(argc, argv);
-		app.Proc();
-		app.Quit();
+	//Event handlers
+	void MouseMotion(SDL_MouseMotionEvent const&);
+	void MouseButtonDown(SDL_MouseButtonEvent const&);
+	void MouseButtonUp(SDL_MouseButtonEvent const&);
+	void KeyDown(SDL_KeyboardEvent const&);
+	void KeyUp(SDL_KeyboardEvent const&);
+};
 
-		Application::DeleteSingleton();
-
-		//delete the singletons
-		ConfigUtility::DeleteSingleton();
-	}
-	catch(std::exception& e) {
-		std::cerr << "Fatal exception thrown: " << e.what() << std::endl;
-		return 1;
-	}
-	return 0;
-}
+#endif

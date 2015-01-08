@@ -19,33 +19,65 @@
  * 3. This notice may not be removed or altered from any source
  * distribution.
 */
-#include "application.hpp"
-#include "config_utility.hpp"
+#include "gameplay.hpp"
 
-#include <stdexcept>
-#include <iostream>
+//-------------------------
+//Public access members
+//-------------------------
 
-int main(int argc, char* argv[]) {
-	try {
-		//create the singletons
-		ConfigUtility::CreateSingleton();
+Gameplay::Gameplay() {
+	//
+}
 
-		//call the application's routines
-		Application::CreateSingleton();
-		Application app = Application::GetSingleton();
+Gameplay::~Gameplay() {
+	//
+}
 
-		app.Init(argc, argv);
-		app.Proc();
-		app.Quit();
+//-------------------------
+//Frame loop
+//-------------------------
 
-		Application::DeleteSingleton();
+void Gameplay::FrameStart() {
+	//
+}
 
-		//delete the singletons
-		ConfigUtility::DeleteSingleton();
+void Gameplay::Update() {
+	//
+}
+
+void Gameplay::FrameEnd() {
+	//
+}
+
+void Gameplay::Render(SDL_Surface* const screen) {
+	//
+}
+
+//-------------------------
+//Event handlers
+//-------------------------
+
+void Gameplay::MouseMotion(SDL_MouseMotionEvent const& motion) {
+	//
+}
+
+void Gameplay::MouseButtonDown(SDL_MouseButtonEvent const& button) {
+	//
+}
+
+void Gameplay::MouseButtonUp(SDL_MouseButtonEvent const& button) {
+	//
+}
+
+void Gameplay::KeyDown(SDL_KeyboardEvent const& key) {
+	//hotkeys
+	switch(key.keysym.sym) {
+		case SDLK_ESCAPE:
+			QuitEvent();
+		break;
 	}
-	catch(std::exception& e) {
-		std::cerr << "Fatal exception thrown: " << e.what() << std::endl;
-		return 1;
-	}
-	return 0;
+}
+
+void Gameplay::KeyUp(SDL_KeyboardEvent const& key) {
+	//
 }

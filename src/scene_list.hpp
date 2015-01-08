@@ -19,33 +19,17 @@
  * 3. This notice may not be removed or altered from any source
  * distribution.
 */
-#include "application.hpp"
-#include "config_utility.hpp"
+#ifndef SCENELIST_HPP_
+#define SCENELIST_HPP_
 
-#include <stdexcept>
-#include <iostream>
+enum class SceneList {
+	//these are reserved
+	QUIT,
+	CONTINUE,
+	FIRST,
 
-int main(int argc, char* argv[]) {
-	try {
-		//create the singletons
-		ConfigUtility::CreateSingleton();
+	//custom indexes
+	GAMEPLAY,
+};
 
-		//call the application's routines
-		Application::CreateSingleton();
-		Application app = Application::GetSingleton();
-
-		app.Init(argc, argv);
-		app.Proc();
-		app.Quit();
-
-		Application::DeleteSingleton();
-
-		//delete the singletons
-		ConfigUtility::DeleteSingleton();
-	}
-	catch(std::exception& e) {
-		std::cerr << "Fatal exception thrown: " << e.what() << std::endl;
-		return 1;
-	}
-	return 0;
-}
+#endif

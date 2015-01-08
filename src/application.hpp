@@ -19,33 +19,28 @@
  * 3. This notice may not be removed or altered from any source
  * distribution.
 */
-#include "application.hpp"
-#include "config_utility.hpp"
+#ifndef APPLICATION_HPP_
+#define APPLICATION_HPP_
 
-#include <stdexcept>
-#include <iostream>
+#include "base_scene.hpp"
+#include "scene_list.hpp"
+#include "singleton.hpp"
 
-int main(int argc, char* argv[]) {
-	try {
-		//create the singletons
-		ConfigUtility::CreateSingleton();
+class Application: public Singleton<Application> {
+public:
+	//public methods
+	void Init(int argc, char* argv[]);
+	void Proc();
+	void Quit();
 
-		//call the application's routines
-		Application::CreateSingleton();
-		Application app = Application::GetSingleton();
+private:
+	friend Singleton<Application>;
 
-		app.Init(argc, argv);
-		app.Proc();
-		app.Quit();
+	//Private access members
+	void LoadScene(SceneList sceneIndex);
+	void UnloadScene();
 
-		Application::DeleteSingleton();
+	BaseScene* activeScene = nullptr;
+};
 
-		//delete the singletons
-		ConfigUtility::DeleteSingleton();
-	}
-	catch(std::exception& e) {
-		std::cerr << "Fatal exception thrown: " << e.what() << std::endl;
-		return 1;
-	}
-	return 0;
-}
+#endif

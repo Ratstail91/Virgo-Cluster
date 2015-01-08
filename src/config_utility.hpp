@@ -19,33 +19,37 @@
  * 3. This notice may not be removed or altered from any source
  * distribution.
 */
-#include "application.hpp"
-#include "config_utility.hpp"
+#ifndef CONFIGUTILITY_HPP_
+#define CONFIGUTILITY_HPP_
 
-#include <stdexcept>
-#include <iostream>
+#include "singleton.hpp"
 
-int main(int argc, char* argv[]) {
-	try {
-		//create the singletons
-		ConfigUtility::CreateSingleton();
+#include <map>
+#include <string>
 
-		//call the application's routines
-		Application::CreateSingleton();
-		Application app = Application::GetSingleton();
+class ConfigUtility: public Singleton<ConfigUtility> {
+public:
+	void Load(std::string fname, bool skipMissingFile = false, int argc = 0, char* argv[] = nullptr);
 
-		app.Init(argc, argv);
-		app.Proc();
-		app.Quit();
+	//convert to a type
+	std::string& String(std::string);
+	int Integer(std::string);
+	double Double(std::string);
+	bool Boolean(std::string);
 
-		Application::DeleteSingleton();
+	//shorthand
+	inline std::string& operator[](std::string s) { return configMap[s]; }
+	inline int Int(std::string s) { return Integer(s); }
+	inline bool Bool(std::string s) { return Boolean(s); }
 
-		//delete the singletons
-		ConfigUtility::DeleteSingleton();
-	}
-	catch(std::exception& e) {
-		std::cerr << "Fatal exception thrown: " << e.what() << std::endl;
-		return 1;
-	}
-	return 0;
-}
+private:
+	typedef std::map<std::string, std::string> table_t;
+
+	friend Singleton<ConfigUtility>;
+
+	table_t Read(std::string fname, bool skipMissingFile);
+
+	table_t configMap;
+};
+
+#endif
