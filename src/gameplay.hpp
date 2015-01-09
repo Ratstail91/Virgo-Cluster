@@ -23,6 +23,17 @@
 #define GAMEPLAY_HPP_
 
 #include "base_scene.hpp"
+#include "image.hpp"
+
+#include <list>
+
+struct Ship {
+	int x, y;
+};
+
+struct Drone {
+	int x, y;
+};
 
 class Gameplay: public BaseScene {
 public:
@@ -43,6 +54,12 @@ protected:
 	void MouseButtonUp(SDL_MouseButtonEvent const&);
 	void KeyDown(SDL_KeyboardEvent const&);
 	void KeyUp(SDL_KeyboardEvent const&);
+
+	//members
+	Image shipField;
+	Image droneField;
+	std::list<Ship> shipList;
+	std::list<Drone> droneList;
 };
 
 #endif
